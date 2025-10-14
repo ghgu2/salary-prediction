@@ -35,7 +35,8 @@
 ## ✅ Validation
 - Данные делились на три части: train / validation / test.  
 - Модель обучалась на train, качество оценивалось на validation.  
-- Test использовался для сабмитов на Kaggle.  
+- Test использовался для сабмитов на Kaggle.
+- Порядок
 
 ---
 
@@ -43,8 +44,8 @@
 
 | Модель                     | R² (val)  | 
 | -------------------------- | --------  | 
-| Ridge                      | 0.62      | 
-| CatBoostRegressor          | 0.775     | 
+| Ridge                      | 0.775      | 
+| CatBoostRegressor          | 0.771     | 
 | XGBRegressor               | 0.774     | 
 | **BertRegressor**          | 0.764     | 
 | **Stacking (final Ridge)** | **0.788**  | 
