@@ -25,7 +25,7 @@
    - Была использована модель ai-forever/ruBert-base, после который применялся линейный слой с HuberLoss. Данная модель обучалась с помощью Trainer (HuggingFace Transformers) в течение 5 эпох с малой скоростью обучения (≈3e-5), чтобы избежать переобучения при ограниченном количестве данных и сохранить знания предобученного трансформера.
    
 2. **Табличные модели (CatBoostRegressor, XGBRegressor, Ridge)**  
-   - Каждая из этих моделей использует обработанные признаки из исходных данных (experience_from, location, company), предсказания BERT как дополнительный признак, вктор признаков, полученных с помощью преобразования full_text → TF-IDF → TruncatedSVD.
+   - Каждая из этих моделей использует обработанные признаки из исходных данных (experience_from, location, company), предсказания BERT как дополнительный признак, вктор признаков, полученных с помощью преобразования full_text → TF-IDF → TruncatedSVD. Для CatBoostRegressor и XGBRegressor гиперпараметры подбирались с помощью hyperopt.
 
 3. **Ridge в качестве метамодели**  
    - Финальная модель Ridge обучена на предсказаниях BertRegressor, CatBoostRegressor, XGBRegressor, Ridge.
