@@ -13,19 +13,19 @@
 ## 🔧 Data preprocessing
 
 - Очистка HTML-тегов, лишних пробелов и не-буквенных символов.  
-- Объединение всех текстовых полей (title, description, skills и др.) в единый столбец full_text.  
-- Удаление стоп-слов с помощью nltk для получения признаков с помощью TF-IDF → TruncatedSVD.
-- Для табличных данных числовой признак experience_from масштабировался через StandardScaler,а категориальные location, company кодировались через OneHotEncoder.
+- Объединение всех полей таблицы (title, experience_from, location, company, description, skills) в единый столбец full_text.
+- Удаление стоп-слов с помощью nltk и лемматизация слов с помощью pymorphy3 для получения признаков с помощью TF-IDF → TruncatedSVD.
+- Для табличных данных числовой признак experience_from масштабировался через StandardScaler,а категориальные location, company кодировались через OneHotEncoder по топ-100 наиболее частым категориям (остальные сгруппированы как Other).
 
 ---
 
 ## 🤖 Models
 
 1. **ruBert + линейные слои**  
-   - Была использована модель ai-forever/ruBert-base, после который применялся линейный слой с HuberLoss. Данная модель обучалась с помощью Trainer (HuggingFace Transformers) в течение 5 эпох с малой скоростью обучения (≈3e-5), чтобы избежать переобучения при ограниченном количестве данных и сохранить знания предобученного трансформера.
+   - Была использована модель ai-forever/ruBert-base, после который применялся линейный слой с HuberLoss. Данная модель обучалась с помощью Trainer (HuggingFace Transformers) в течение 4 эпох с малой скоростью обучения (≈3e-5), чтобы избежать переобучения при ограниченном количестве данных и сохранить знания предобученного трансформера.
    
 2. **Табличные модели (CatBoostRegressor, XGBRegressor, Ridge)**  
-   - Каждая из этих моделей использует обработанные признаки из исходных данных (experience_from, location, company), предсказания BERT как дополнительный признак, вктор признаков, полученных с помощью преобразования full_text → TF-IDF → TruncatedSVD. Для CatBoostRegressor и XGBRegressor гиперпараметры подбирались с помощью hyperopt.
+   - Каждая из этих моделей использует обработанные признаки из исходных данных (experience_from, location, company), предсказания BERT как дополнительный признак, вктор признаков, полученных с помощью преобразования full_text → lemmatization → TF-IDF → TruncatedSVD. Для CatBoostRegressor и XGBRegressor гиперпараметры подбирались с помощью hyperopt.
 
 3. **Ridge в качестве метамодели**  
    - Финальная модель Ridge обучена на предсказаниях BertRegressor, CatBoostRegressor, XGBRegressor, Ridge.
@@ -41,13 +41,14 @@
 
 ## 📈 Результаты
 
-| Модель                     | R² (val)  | 
-| -------------------------- | --------  | 
-| Ridge                      | **0.775**      | 
-| CatBoostRegressor          | 0.771     | 
-| XGBRegressor               | 0.774     | 
-| **BertRegressor**          | 0.764     | 
-| **Stacking (final Ridge)** | 0.769  | 
+| Модель | R2_train | R2_val | R2_test |
+|---|---:|---:|---:|
+| CatBoostRegressor | 0.977065 | 0.771822** |0.779502 |
+| XGBRegressor | 0.957768 | **0.774246** | **0.785118** |
+| Ridge | 0.947276 | 0.771305 | 0.783426 |
+| BERT | 0.937226 | 0.762362 | 0.772943 |
+| **Meta model ** | **0.982872** | 0.763661 | 0.769802 |
+
  
 
 ---
