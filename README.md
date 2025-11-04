@@ -43,11 +43,11 @@
 
 | Модель                     | R² (val)  | 
 | -------------------------- | --------  | 
-| Ridge                      | 0.775      | 
+| Ridge                      | **0.775**      | 
 | CatBoostRegressor          | 0.771     | 
 | XGBRegressor               | 0.774     | 
 | **BertRegressor**          | 0.764     | 
-| **Stacking (final Ridge)** | **0.769**  | 
+| **Stacking (final Ridge)** | 0.769  | 
  
 
 ---
