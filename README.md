@@ -47,7 +47,7 @@
 | CatBoostRegressor          | 0.771     | 
 | XGBRegressor               | 0.774     | 
 | **BertRegressor**          | 0.764     | 
-| **Stacking (final Ridge)** | **0.788**  | 
+| **Stacking (final Ridge)** | **0.769**  | 
  
 
 ---
